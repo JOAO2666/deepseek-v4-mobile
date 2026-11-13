@@ -902,6 +902,17 @@ a:hover {
   border-color: var(--border-strong);
 }
 
+.input-inline-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.input-inline-row .input-control {
+  flex: 1;
+  min-width: 0;
+}
+
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

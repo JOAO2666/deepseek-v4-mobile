@@ -898,7 +898,6 @@
     inputSystem.value = settings.systemPrompt;
     inputMaxTokens.value = settings.maxTokens;
     inputTemp.value = settings.temperature;
-    customUrlField.hidden = settings.backend !== "custom";
     settingsModal.classList.add("open");
   }
 
@@ -918,8 +917,32 @@
     if (e.target === settingsModal) closeSettings();
   });
 
-  selectBackend.onchange = () => {
-    customUrlField.hidden = selectBackend.value !== "custom";
+  inputCustomUrl.addEventListener("input", () => {
+    const val = inputCustomUrl.value.trim();
+    if (/^https?:\/\/.+/i.test(val)) {
+      selectBackend.value = "custom";
+    }
+  });
+
+  $("btn-test-colab").onclick = async () => {
+    const statusEl = $("colab-test-status");
+    const url = inputCustomUrl.value.trim().replace(/\/+$/, "");
+    if (!url) {
+      statusEl.textContent = "Cole primeiro a URL pública https://...gradio.live gerada no Colab.";
+      return;
+    }
+    statusEl.textContent = "Testando conexão com o servidor Colab...";
+    try {
+      const res = await fetch(`${url}/gradio_api/info`, { headers: authHeaders() });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const info = await res.json();
+      const eps = Object.keys(info.named_endpoints || {});
+      if (!eps.length) throw new Error("Nenhum endpoint Gradio ativo.");
+      selectBackend.value = "custom";
+      statusEl.textContent = `✅ Conectado! Endpoint ativo: ${eps.join(", ")}. Clique em Salvar para usar.`;
+    } catch (err) {
+      statusEl.textContent = `❌ Não foi possível conectar (${err.message}). Confira se a célula 3 do Colab está rodando.`;
+    }
   };
 
   $("btn-save-settings").onclick = () => {

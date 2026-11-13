@@ -114,12 +114,16 @@
           <p class="field-hint">O modo automático alterna entre os servidores gratuitos caso um deles atinja o limite de fila ou cota.</p>
         </div>
 
-        <div id="custom-url-field" class="field" hidden>
-          <label for="input-custom-url">URL Pública do Colab / Gradio</label>
-          <input id="input-custom-url" class="input-control" type="url" placeholder="https://xxxxxxxxxxxx.gradio.live">
-          <p class="field-hint">
-            Gere sua própria URL dedicada em GPU T4 usando o
-            <a href="https://colab.research.google.com/github/JOAO2666/deepseek-v4-mobile/blob/main/colab/DeepSeek_V4_Pro_9B_Heretic_Colab.ipynb" target="_blank" rel="noopener noreferrer">notebook corrigido no Google Colab</a>.
+        <div id="custom-url-field" class="field">
+          <label for="input-custom-url">URL Pública do Colab / Gradio (opcional)</label>
+          <div class="input-inline-row">
+            <input id="input-custom-url" class="input-control" type="url" placeholder="https://xxxxxxxxxxxx.gradio.live">
+            <button id="btn-test-colab" class="btn-secondary" type="button">Testar</button>
+          </div>
+          <p id="colab-test-status" class="field-hint">
+            Cole a URL gerada pelo
+            <a href="https://colab.research.google.com/github/JOAO2666/deepseek-v4-mobile/blob/main/colab/DeepSeek_V4_Pro_9B_Heretic_Colab.ipynb" target="_blank" rel="noopener noreferrer">notebook do Google Colab</a>
+            para ativar sua GPU T4 dedicada automaticamente.
           </p>
         </div>
 
