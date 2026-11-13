@@ -1,0 +1,17 @@
+{
+  "name": "DeepSeek V4 Pro 9B Mobile",
+  "short_name": "DeepSeek V4",
+  "description": "Chat mobile para DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic com failover em GPUs A10G e suporte a Google Colab.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0e0f11",
+  "theme_color": "#0e0f11",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

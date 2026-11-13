@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e0f11">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>DeepSeek V4 Pro · 9B Mobile</title>
+  <meta name="description" content="Interface mobile para o modelo xtools-at/DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic com servidores GPU A10G e suporte a Google Colab.">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <aside id="sidebar" class="sidebar" aria-label="Conversas salvas">
+      <div class="sidebar-top">
+        <button id="btn-new-chat" class="btn-new-chat" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Nova conversa
+        </button>
+      </div>
+      <div id="chat-list" class="chat-list"></div>
+      <div class="sidebar-footer">
+        <a id="colab-link-sidebar" class="sidebar-link" href="https://colab.research.google.com/github/JOAO2666/deepseek-v4-mobile/blob/main/colab/DeepSeek_V4_Pro_9B_Heretic_Colab.ipynb" target="_blank" rel="noopener noreferrer">
+          <span>Abrir no Google Colab (T4 GPU)</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+        <a class="sidebar-link" href="https://huggingface.co/xtools-at/DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic" target="_blank" rel="noopener noreferrer">
+          <span>Página do Modelo (HF)</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main-stage">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="btn-menu" class="icon-btn btn-menu-mobile" type="button" aria-label="Abrir histórico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <button id="btn-backend-badge" class="model-badge" type="button" title="Configurar servidor e parâmetros">
+            <span id="status-dot" class="status-dot"></span>
+            <span class="model-badge-text">
+              <span class="model-name">DeepSeek-V4-Pro 9B</span>
+              <span id="backend-label" class="backend-label">Auto · A10G ZeroGPU</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="topbar-right">
+          <button id="btn-theme" class="icon-btn" type="button" aria-label="Alternar tema">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          </button>
+          <button id="btn-settings" class="icon-btn" type="button" aria-label="Configurações">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div id="messages-scroll" class="messages-scroll">
+        <div id="messages-inner" class="messages-inner"></div>
+      </div>
+
+      <div class="composer-wrap">
+        <form id="composer-form" class="composer-form">
+          <div id="attachment-strip" class="attachment-strip" hidden></div>
+          <textarea id="prompt-input" class="composer-textarea" rows="1" placeholder="Envie uma mensagem para o DeepSeek-V4-Pro 9B..."></textarea>
+          <div class="composer-toolbar">
+            <div class="toolbar-left">
+              <input id="file-input" type="file" accept="image/*" multiple hidden>
+              <button id="btn-attach" class="icon-btn" type="button" aria-label="Anexar imagem" title="Anexar imagem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </button>
+              <button id="btn-thinking" class="pill-toggle active" type="button" aria-pressed="true">
+                <span>Raciocínio</span>
+              </button>
+            </div>
+            <button id="btn-send" class="btn-send" type="submit" aria-label="Enviar mensagem" disabled>
+              <svg id="icon-send" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              <svg id="icon-stop" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 id="settings-title">Configurações do Modelo</h2>
+        <button id="btn-close-settings" class="icon-btn" type="button" aria-label="Fechar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="select-backend">Servidor GPU</label>
+          <select id="select-backend" class="input-control">
+            <option value="auto">Automático (Echotree -> Jakubicek -> Bimapopo345)</option>
+            <option value="echotree">Echotree · BF16 + Raciocínio + Imagem (ZeroGPU A10G)</option>
+            <option value="jakubicek">Jakubicek · BF16 + Raciocínio (ZeroGPU A10G)</option>
+            <option value="bimapopo345">Bimapopo345 · 4-bit Rápido (ZeroGPU A10G)</option>
+            <option value="custom">Meu Google Colab / URL Gradio Própria</option>
+          </select>
+          <p class="field-hint">O modo automático alterna entre os servidores gratuitos caso um deles atinja o limite de fila ou cota.</p>
+        </div>
+
+        <div id="custom-url-field" class="field" hidden>
+          <label for="input-custom-url">URL Pública do Colab / Gradio</label>
+          <input id="input-custom-url" class="input-control" type="url" placeholder="https://xxxxxxxxxxxx.gradio.live">
+          <p class="field-hint">
+            Gere sua própria URL dedicada em GPU T4 usando o
+            <a href="https://colab.research.google.com/github/JOAO2666/deepseek-v4-mobile/blob/main/colab/DeepSeek_V4_Pro_9B_Heretic_Colab.ipynb" target="_blank" rel="noopener noreferrer">notebook corrigido no Google Colab</a>.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="input-hf-token">Token Hugging Face (opcional)</label>
+          <input id="input-hf-token" class="input-control" type="password" placeholder="hf_... (salvo apenas no seu aparelho)">
+          <p class="field-hint">Se a cota anônima do ZeroGPU acabar, cole um token Read gratuito do Hugging Face para ampliar o limite diário.</p>
+        </div>
+
+        <div class="field">
+          <label for="input-system">System Prompt</label>
+          <textarea id="input-system" class="input-control" rows="3"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="input-max-tokens">Máximo de tokens</label>
+            <input id="input-max-tokens" class="input-control" type="number" min="256" max="8192" step="128">
+          </div>
+          <div class="field">
+            <label for="input-temp">Temperatura (0.0 – 1.5)</label>
+            <input id="input-temp" class="input-control" type="number" min="0" max="1.5" step="0.05">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button id="btn-reset-settings" class="btn-secondary" type="button">Restaurar padrão</button>
+        <button id="btn-save-settings" class="btn-primary" type="button">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
