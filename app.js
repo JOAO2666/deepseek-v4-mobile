@@ -886,7 +886,9 @@
 
   function autoResizeTextarea() {
     promptInput.style.height = "auto";
-    promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + "px";
+    const h = Math.min(promptInput.scrollHeight, 160);
+    promptInput.style.height = h + "px";
+    promptInput.style.overflowY = promptInput.scrollHeight > 160 ? "auto" : "hidden";
   }
 
   function openSettings() {
